@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VM Emulator Setup</title>
+</head>
+<body>
+    <h1>VM Emulator Setup</h1>
+    <div id="setupForm">
+        <label for="isoFile">Enter the path to the ISO file:</label>
+        <input type="text" id="isoFile"><br><br>
+
+        <label for="ramSize">Enter the amount of RAM (e.g., 2G):</label>
+        <input type="text" id="ramSize"><br><br>
+
+        <label for="cpuCores">Enter the number of CPU cores:</label>
+        <input type="text" id="cpuCores"><br><br>
+
+        <label for="diskSize">Enter the size of the disk (e.g., 20G):</label>
+        <input type="text" id="diskSize"><br><br>
+
+        <button onclick="runVM()">Run VM</button>
+    </div>
+
+    <div id="output"></div>
+
+    <script>
+        async function runVM() {
+            const isoFile = document.getElementById("isoFile").value;
+            const ramSize = document.getElementById("ramSize").value;
+            const cpuCores = document.getElementById("cpuCores").value;
+            const diskSize = document.getElementById("diskSize").value;
+
+            const outputDiv = document.getElementById("output");
+            outputDiv.innerHTML = "Setting up the virtual machine...";
+
+            const response = await fetch('/runVM', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ isoFile, ramSize, cpuCores, diskSize })
+            });
+
+            if (response.ok) {
+                outputDiv.innerHTML = "Virtual machine has been set up and is running.";
+            } else {
+                outputDiv.innerHTML = "Failed to set up and run the virtual machine.";
+            }
+        }
+    </script>
+</body>
+</html>
